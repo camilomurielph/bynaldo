@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ByNaldo — Fotografía · Video · Dirección</title>
+  <meta name="description" content="Portafolio de fotografía, video y dirección. Proyectos visuales con enfoque cinematográfico." />
+
+  <!-- Aplica el tema guardado ANTES de pintar (evita flash) -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============================= -->
+  <!-- NAVBAR                        -->
+  <!-- ============================= -->
+  <header class="navbar">
+    <a href="#" class="navbar__logo">BY·NALDO</a>
+
+    <div class="navbar__right">
+      <nav class="navbar__links">
+        <a href="#fotos">Fotos</a>
+        <a href="#videos">Videos</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <!-- Interruptor de tema -->
+      <button class="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+        <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+        </svg>
+        <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+
+  <!-- ============================= -->
+  <!-- MÓDULO 1 — HERO               -->
+  <!-- ============================= -->
+  <section class="hero" id="inicio">
+
+    <!-- ============================================== -->
+    <!-- IMAGEN PRINCIPAL DEL HERO                      -->
+    <!-- Reemplaza "TU-IMAGEN-HERO.jpg" por tu imagen   -->
+    <!-- ============================================== -->
+    <div class="hero__media" aria-hidden="true">
+      <img src="TU-IMAGEN-HERO.png" alt="" class="hero__media-img" />
+    </div>
+
+    <div class="hero__content">
+      <p class="hero__overline">Fotógrafo · Videógrafo · Director</p>
+
+      <h1 class="hero__title">
+        ByNaldo<br />
+         <em>cali</em>, <em>colombia</em>.
+      </h1>
+
+      <p class="hero__description">
+        Soy Reinaldo Riascos, más conocido como By Naldo, fotógrafo, productor audiovisual y director creativo, nacido en Guapi, Cauca, y radicado en Cali. <br>
+        Mi trabajo nace de mi interés por contar historias a través de la imagen y crear propuestas visuales que conecten con las personas.
+</p>
+
+      <!-- Botón de WhatsApp -->
+      <a
+        href="https://wa.me/573102375607?text=Hola%2C%20quiero%20consultar%20por%20un%20proyecto"
+        target="_blank"
+        rel="noopener"
+        class="btn btn--outline"
+      >
+        <span>Hablemos por WhatsApp</span>
+        <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="hero__scroll">
+      <span>Scroll</span>
+      <span class="hero__scroll-line"></span>
+    </div>
+  </section>
+
+
+  <!-- ============================= -->
+  <!-- MÓDULO 2 — GALERÍA FOTOS      -->
+  <!-- ============================= -->
+  <section class="gallery-section" id="fotos">
+    <div class="section-head">
+      <p class="section-head__overline">01 — Portafolio</p>
+      <h2 class="section-head__title">Fotos</h2>
+      <p class="section-head__subtitle">
+        Una selección de trabajos fotográficos donde la luz se convierte en narrativa.
+      </p>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- GALERÍA DE FOTOS                              -->
+    <!-- Reemplaza la URL de cada background-image     -->
+    <!-- en styles.css dentro de .gallery__item[data-x] -->
+    <!-- o usa <img src="tu-foto.jpg" /> dentro de cada item -->
+    <!-- ============================================== -->
+    <div class="gallery">
+      <figure class="gallery__item" data-index="01">
+        <img src="/assets/img4.webp" alt="Documental urbano" />
+        <figcaption class="gallery__caption">
+          <span>Retrato · Editorial</span>
+          <span>2024</span>
+        </figcaption>
+      </figure>
+
+      <figure class="gallery__item" data-index="02">
+        <img src="/assets/img6.webp" alt="Documental urbano" />
+        <figcaption class="gallery__caption">
+          <span>Moda · Nocturno</span>
+          <span>2024</span>
+        </figcaption>
+      </figure>
+
+      <figure class="gallery__item" data-index="03">
+        <img src="/assets/img7.webp" alt="Documental urbano" />
+        <figcaption class="gallery__caption">
+          <span>Documental · Urbano</span>
+          <span>2023</span>
+        </figcaption>
+      </figure>
+
+      <figure class="gallery__item" data-index="04">
+        <img src="/assets/img3.webp" alt="Documental urbano" />
+        <figcaption class="gallery__caption">
+          <span>Producto · Minimal</span>
+          <span>2023</span>
+        </figcaption>
+      </figure>
+
+      <figure class="gallery__item" data-index="05">
+        <img src="/assets/img9.webp" alt="Documental urbano" />
+        <figcaption class="gallery__caption">
+          <span>Retrato · Estudio</span>
+          <span>2024</span>
+        </figcaption>
+      </figure>
+
+      <figure class="gallery__item" data-index="06">
+        <img src="/assets/img8.webp" alt="Documental urbano" />
+        <figcaption class="gallery__caption">
+          <span>Paisaje · Conceptual</span>
+          <span>2023</span>
+        </figcaption>
+      </figure>
+
+      <figure class="gallery__item" data-index="06">
+        <img src="/assets/img10.webp" alt="Documental urbano" />
+        <figcaption class="gallery__caption">
+          <span>Paisaje · Conceptual</span>
+          <span>2023</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+
+  <!-- ============================= -->
+  <!-- MÓDULO 3 — GALERÍA VIDEOS     -->
+  <!-- ============================= -->
+  <section class="videos-section" id="videos">
+    <div class="section-head">
+      <p class="section-head__overline">02 — Reels & Films</p>
+      <h2 class="section-head__title">Videos</h2>
+      <p class="section-head__subtitle">
+        Piezas verticales para redes y formatos cinematográficos.
+      </p>
+    </div>
+
+  <!-- ============================= -->
+  <!-- MÓDULO 3 — GALERÍA VIDEOS     -->
+  <!-- ============================= -->
+  <section class="videos-section" id="videos">
+    <div class="section-head">
+      <p class="section-head__overline">02 — Reels & Films</p>
+      <h2 class="section-head__title">Videos</h2>
+      <p class="section-head__subtitle">
+        Piezas verticales para redes y formatos cinematográficos.
+      </p>
+    </div>
+
+    <div class="reels">
+
+      <div class="reel-card">
+        <div class="reel-embed">
+          <div class="reel-embed__inner">
+            <iframe
+              src="https://www.youtube.com/embed/pBIrBU_xxLc?rel=0&modestbranding=1&playsinline=1"
+              title="Reel vertical — Documental"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+        <div class="reel-card__meta">
+          <span class="reel-card__tag">Reel · 01</span>
+          <span class="reel-card__title">Documental — Corto</span>
+        </div>
+      </div>
+
+      <div class="reel-card">
+        <div class="reel-embed">
+          <div class="reel-embed__inner">
+            <iframe
+              src="https://www.youtube.com/embed/pBIrBU_xxLc?rel=0&modestbranding=1&playsinline=1"
+              title="Reel vertical — Short"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+        <div class="reel-card__meta">
+          <span class="reel-card__tag">Reel · 02</span>
+          <span class="reel-card__title">Short — Corto</span>
+        </div>
+      </div>
+
+      <div class="reel-card">
+        <div class="reel-embed">
+          <div class="reel-embed__inner">
+            <iframe
+              src="https://www.youtube.com/embed/pBIrBU_xxLc?rel=0&modestbranding=1&playsinline=1"
+              title="Reel vertical — Marca"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+        <div class="reel-card__meta">
+          <span class="reel-card__tag">Reel · 03</span>
+          <span class="reel-card__title">Marca — Corto</span>
+        </div>
+      </div>
+
+      <div class="reel-card">
+        <div class="reel-embed">
+          <div class="reel-embed__inner">
+            <iframe
+              src="https://www.youtube.com/embed/pBIrBU_xxLc?rel=0&modestbranding=1&playsinline=1"
+              title="Reel vertical — Making off"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+        <div class="reel-card__meta">
+          <span class="reel-card__tag">Reel · 04</span>
+          <span class="reel-card__title">Making off — Corto</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================= -->
+  <!-- FOOTER / CONTACTO             -->
+  <!-- ============================= -->
+  <footer class="footer" id="contacto">
+    <div class="footer__top">
+      <h2 class="footer__title">¿Trabajamos juntos?</h2>
+      <a
+        href="https://wa.me/573102375607?text=Hola%2C%20quiero%20consultar%20por%20un%20proyecto"
+        target="_blank"
+        rel="noopener"
+        class="btn btn--outline btn--lg"
+      >
+        <span>Escribime por WhatsApp</span>
+        <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© 2025 ByNaldo</span>
+      <div class="footer__links">
+        <a href="#">Instagram</a>
+        <a href="#">Behance</a>
+        <a href="#">Vimeo</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Instagram Embed Script -->
+  <script async src="//www.instagram.com/embed.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
