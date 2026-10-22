@@ -169,7 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* =====================================================
      7. CARRUSELES MÓVILES — el item más visible se activa
-        (aplica a fotos y videos; el CSS decide qué cambia)
      ===================================================== */
   const setupActiveHighlight = (containerSelector, itemSelector, mediaQuery) => {
     const container = document.querySelector(containerSelector);
@@ -204,7 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
 
-    /* Recalcular al deslizar (throttle con rAF) */
     container.addEventListener('scroll', () => {
       if (rafId) return;
       rafId = requestAnimationFrame(() => {
@@ -213,19 +211,15 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }, { passive: true });
 
-    /* Recalcular cuando cada imagen termina de cargar
-       (el ancho del card depende del aspect-ratio de la imagen) */
     container.querySelectorAll('img').forEach((img) => {
       img.addEventListener('load', update, { once: true });
     });
 
-    /* Primeras pasadas (por si las imágenes tardan) */
     update();
     setTimeout(update, 500);
     setTimeout(update, 1500);
     window.addEventListener('load', update);
 
-    /* Limpiar al volver a desktop */
     mediaQuery.addEventListener('change', (e) => {
       if (e.matches) {
         update();
@@ -236,7 +230,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    /* Recalcular al rotar el dispositivo */
     window.addEventListener('orientationchange', () => {
       setTimeout(update, 200);
     });
@@ -245,5 +238,88 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileQuery = window.matchMedia('(max-width: 640px)');
   setupActiveHighlight('.gallery', '.gallery__item', mobileQuery);
   setupActiveHighlight('.reels', '.reel-card', mobileQuery);
+
+  /* =====================================================
+     8. LIGHTBOX DE FOTOS
+     ===================================================== */
+  const lightbox = document.querySelector('#lightbox');
+  const lightboxImg = lightbox ? lightbox.querySelector('.lightbox__img') : null;
+  const lightboxTitle = lightbox ? lightbox.querySelector('.lightbox__title') : null;
+  const lightboxYear = lightbox ? lightbox.querySelector('.lightbox__year') : null;
+  const lightboxClose = lightbox ? lightbox.querySelector('.lightbox__close') : null;
+
+  let lastFocusedEl = null;
+
+  const openLightbox = (item) => {
+    if (!lightbox || !lightboxImg) return;
+
+    const img = item.querySelector('img');
+    if (!img) return;
+
+    const spans = item.querySelectorAll('.gallery__caption span');
+
+    lightboxImg.src = img.currentSrc || img.src;
+    lightboxImg.alt = img.alt || '';
+
+    if (lightboxTitle) lightboxTitle.textContent = spans[0] ? spans[0].textContent : '';
+    if (lightboxYear) lightboxYear.textContent = spans[1] ? spans[1].textContent : '';
+
+    lastFocusedEl = document.activeElement;
+
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    bodyEl.classList.add('lightbox-open');
+
+    if (lightboxClose) {
+      setTimeout(() => lightboxClose.focus(), 50);
+    }
+  };
+
+  const closeLightbox = () => {
+    if (!lightbox) return;
+
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    bodyEl.classList.remove('lightbox-open');
+
+    setTimeout(() => {
+      if (lightboxImg) lightboxImg.src = '';
+      if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') {
+        lastFocusedEl.focus();
+      }
+    }, 300);
+  };
+
+  if (lightbox) {
+    // Abrir desde cualquier foto (click o teclado)
+    document.querySelectorAll('.gallery__item').forEach((item) => {
+      item.addEventListener('click', () => openLightbox(item));
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openLightbox(item);
+        }
+      });
+    });
+
+    // Cerrar al hacer click en el backdrop (cualquier área que no sea la foto)
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    // Cerrar con el botón ✕
+    if (lightboxClose) {
+      lightboxClose.addEventListener('click', closeLightbox);
+    }
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('is-open')) {
+        closeLightbox();
+      }
+    });
+  }
 
 });
