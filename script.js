@@ -140,8 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* =====================================================
      6. PRELOAD THEME — fade-in de imágenes y videos
      ===================================================== */
-
-  /* ---------- 6a. Fotos ---------- */
   document.querySelectorAll('.gallery__item').forEach((item) => {
     const img = item.querySelector('img');
     if (!img) return;
@@ -156,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  /* ---------- 6b. Videos (iframes) ---------- */
   document.querySelectorAll('.reel-embed').forEach((embed) => {
     const iframe = embed.querySelector('iframe');
     if (!iframe) return;
@@ -291,7 +288,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   if (lightbox) {
-    // Abrir desde cualquier foto (click o teclado)
     document.querySelectorAll('.gallery__item').forEach((item) => {
       item.addEventListener('click', () => openLightbox(item));
       item.addEventListener('keydown', (e) => {
@@ -302,24 +298,195 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Cerrar al hacer click en el backdrop (cualquier área que no sea la foto)
     lightbox.addEventListener('click', (e) => {
       if (e.target === lightbox) {
         closeLightbox();
       }
     });
 
-    // Cerrar con el botón ✕
     if (lightboxClose) {
       lightboxClose.addEventListener('click', closeLightbox);
     }
 
-    // Cerrar con Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && lightbox.classList.contains('is-open')) {
         closeLightbox();
       }
     });
+  }
+
+  /* =====================================================
+     9. CARRUSEL DE VIDEOS — 3 visibles + flechas + loop
+        Solo desktop (> 640px). En móvil queda como antes.
+     ===================================================== */
+  const reelsEl = document.querySelector('.reels');
+  const prevBtn = document.querySelector('.reels-arrow--prev');
+  const nextBtn = document.querySelector('.reels-arrow--next');
+  const desktopQuery = window.matchMedia('(min-width: 641px)');
+
+  if (reelsEl) {
+
+    /* ---------- Helpers ---------- */
+    const getStep = () => {
+      const card = reelsEl.querySelector('.reel-card');
+      if (!card) return 300;
+      const gap = parseFloat(getComputedStyle(reelsEl).columnGap)
+               || parseFloat(getComputedStyle(reelsEl).gap)
+               || 20;
+      return card.offsetWidth + gap;
+    };
+
+    const instantScrollTo = (left) => {
+      const prevSnap = reelsEl.style.scrollSnapType;
+      const prevBehavior = reelsEl.style.scrollBehavior;
+      reelsEl.style.scrollSnapType = 'none';
+      reelsEl.style.scrollBehavior = 'auto';
+      reelsEl.scrollLeft = left;
+      // Forzar reflow para que el navegador aplique el cambio
+      void reelsEl.offsetWidth;
+      reelsEl.style.scrollSnapType = prevSnap;
+      reelsEl.style.scrollBehavior = prevBehavior;
+    };
+
+    /* ---------- Clones para el loop ---------- */
+    const originals = Array.from(reelsEl.querySelectorAll('.reel-card:not(.is-clone)'));
+    const N = originals.length;
+    const M = 3; // clones a cada lado (coincide con las cards visibles)
+
+    const cloneCard = (source) => {
+      const c = source.cloneNode(true);
+      c.classList.add('is-clone');
+      c.setAttribute('aria-hidden', 'true');
+      c.removeAttribute('tabindex');
+      c.querySelectorAll('[tabindex], a, button, iframe, [role="button"]').forEach((el) => {
+        el.setAttribute('tabindex', '-1');
+      });
+      return c;
+    };
+
+    if (N > M) {
+      // Clones al inicio: los últimos M originales (en orden)
+      const startFrag = document.createDocumentFragment();
+      for (let i = N - M; i < N; i++) {
+        startFrag.appendChild(cloneCard(originals[i]));
+      }
+      reelsEl.insertBefore(startFrag, reelsEl.firstChild);
+
+      // Clones al final: los primeros M originales (en orden)
+      const endFrag = document.createDocumentFragment();
+      for (let i = 0; i < M; i++) {
+        endFrag.appendChild(cloneCard(originals[i]));
+      }
+      reelsEl.appendChild(endFrag);
+    }
+
+    /* ---------- Scroll inicial (solo desktop) ---------- */
+    const setInitialScroll = () => {
+      if (desktopQuery.matches) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            instantScrollTo(M * getStep());
+          });
+        });
+      } else {
+        reelsEl.scrollLeft = 0;
+      }
+    };
+    setInitialScroll();
+
+    /* ---------- Drag-scroll con mouse ---------- */
+    let isDown = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+    let movedDistance = 0;
+
+    reelsEl.addEventListener('mousedown', (e) => {
+      if (e.target.closest('iframe')) return;
+      if (e.button !== 0) return;
+
+      isDown = true;
+      startX = e.pageX;
+      startScrollLeft = reelsEl.scrollLeft;
+      movedDistance = 0;
+      reelsEl.classList.add('is-dragging');
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const delta = e.pageX - startX;
+      movedDistance = Math.abs(delta);
+      reelsEl.scrollLeft = startScrollLeft - delta * 1.2;
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!isDown) return;
+      isDown = false;
+
+      const step = getStep();
+      const targetLeft = Math.round(reelsEl.scrollLeft / step) * step;
+      reelsEl.scrollTo({ left: targetLeft, behavior: 'smooth' });
+
+      setTimeout(() => {
+        reelsEl.classList.remove('is-dragging');
+      }, 400);
+    });
+
+    reelsEl.addEventListener('click', (e) => {
+      if (movedDistance > 5) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, true);
+
+    /* ---------- Boundary check (loop invisible) ---------- */
+    const checkBoundary = () => {
+      if (!desktopQuery.matches) return;
+      const step = getStep();
+      const index = Math.round(reelsEl.scrollLeft / step);
+
+      if (index < M) {
+        // En zona de clones iniciales → saltar hacia adelante
+        instantScrollTo((index + N) * step);
+      } else if (index >= M + N) {
+        // En zona de clones finales → saltar hacia atrás
+        instantScrollTo((index - N) * step);
+      }
+    };
+
+    let scrollSettleTimer;
+    reelsEl.addEventListener('scroll', () => {
+      if (!desktopQuery.matches) return;
+      clearTimeout(scrollSettleTimer);
+      scrollSettleTimer = setTimeout(checkBoundary, 200);
+    }, { passive: true });
+
+    /* ---------- Flechas ---------- */
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        if (!desktopQuery.matches) return;
+        reelsEl.scrollBy({ left: -getStep(), behavior: 'smooth' });
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        if (!desktopQuery.matches) return;
+        const step = getStep();
+        const index = Math.round(reelsEl.scrollLeft / step);
+
+        // Si estamos en la última posición real, pre-saltar al inicio
+        // (equivalente visual) para que el scroll termine en la posición correcta
+        if (index >= M + N - 1) {
+          instantScrollTo((index - N) * step);
+        }
+
+        reelsEl.scrollBy({ left: step, behavior: 'smooth' });
+      });
+    }
+
+    /* ---------- Resize ---------- */
+    desktopQuery.addEventListener('change', setInitialScroll);
   }
 
 });
