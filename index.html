@@ -153,7 +153,7 @@
     </div>
 
     <div class="gallery">
-      <figure class="gallery__item" data-index="01">
+      <figure class="gallery__item" data-index="01" role="button" tabindex="0" aria-label="Ver foto ampliada: TOPBOY · MÁS DE AHÍ REMIX">
         <img src="/assets/IMG01.webp" alt="Documental urbano" loading="lazy" decoding="async" />
         <figcaption class="gallery__caption">
           <span>TOPBOY · MÁS DE AHÍ REMIX</span>
@@ -161,7 +161,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="02">
+      <figure class="gallery__item" data-index="02" role="button" tabindex="0" aria-label="Ver foto ampliada: SAGRADA">
         <img src="/assets/IMG02.webp" alt="Documental urbano" loading="lazy" decoding="async" />
         <figcaption class="gallery__caption">
           <span>SAGRADA</span>
@@ -169,7 +169,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="03">
+      <figure class="gallery__item" data-index="03" role="button" tabindex="0" aria-label="Ver foto ampliada: NEBULA · NEXUS">
         <img src="/assets/IMG03.webp" alt="Documental urbano" loading="lazy" decoding="async" />
         <figcaption class="gallery__caption">
           <span>NEBULA · NEXUS</span>
@@ -177,7 +177,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="04">
+      <figure class="gallery__item" data-index="04" role="button" tabindex="0" aria-label="Ver foto ampliada: BELL X ADIDAS">
         <img src="/assets/IMG04.webp" alt="Documental urbano" loading="lazy" decoding="async" />
         <figcaption class="gallery__caption">
           <span>BELL X ADIDAS</span>
@@ -185,7 +185,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="05">
+      <figure class="gallery__item" data-index="05" role="button" tabindex="0" aria-label="Ver foto ampliada: DOSAC">
         <img src="/assets/IMG05.webp" alt="Documental urbano" loading="lazy" decoding="async" />
         <figcaption class="gallery__caption">
           <span>DOSAC</span>
@@ -193,7 +193,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="06">
+      <figure class="gallery__item" data-index="06" role="button" tabindex="0" aria-label="Ver foto ampliada: BYSOFIACARVAJAL II">
         <img src="/assets/IMG06.webp" alt="Documental urbano" loading="lazy" decoding="async" />
         <figcaption class="gallery__caption">
           <span>BYSOFIACARVAJAL II</span>
@@ -201,7 +201,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="07">
+      <figure class="gallery__item" data-index="07" role="button" tabindex="0" aria-label="Ver foto ampliada: BYCLAUMAR · TONEÉ">
         <img src="/assets/IMG07.webp" alt="Documental urbano" loading="lazy" decoding="async" />
         <figcaption class="gallery__caption">
           <span>BYCLAUMAR · TONEÉ</span>
@@ -209,7 +209,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="08">
+      <figure class="gallery__item" data-index="08" role="button" tabindex="0" aria-label="Ver foto ampliada: LESAC">
         <img src="/assets/IMG08.webp" alt="Documental urbano" loading="lazy" decoding="async" />
         <figcaption class="gallery__caption">
           <span>LESAC</span>
@@ -217,7 +217,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="09">
+      <figure class="gallery__item" data-index="09" role="button" tabindex="0" aria-label="Ver foto ampliada: PROTRUDE">
         <img src="/assets/IMG09.webp" alt="Documental urbano" loading="lazy" decoding="async" />
         <figcaption class="gallery__caption">
           <span>PROTRUDE</span>
@@ -353,6 +353,32 @@
       </div>
     </div>
   </footer>
+
+  <!-- ============================= -->
+  <!-- LIGHTBOX DE FOTOS             -->
+  <!-- ============================= -->
+  <div
+    class="lightbox"
+    id="lightbox"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Vista ampliada de la fotografía"
+    aria-hidden="true"
+  >
+    <button class="lightbox__close" type="button" aria-label="Cerrar imagen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    </button>
+
+    <figure class="lightbox__figure">
+      <img class="lightbox__img" src="" alt="" />
+      <figcaption class="lightbox__caption">
+        <span class="lightbox__title"></span>
+        <span class="lightbox__year"></span>
+      </figcaption>
+    </figure>
+  </div>
 
   <script src="script.js"></script>
 </body>
