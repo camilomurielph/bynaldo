@@ -29,7 +29,19 @@
   <!-- NAVBAR                        -->
   <!-- ============================= -->
   <header class="navbar">
-    <a href="#" class="navbar__logo">BY·NALDO</a>
+    <a href="#" class="navbar__logo" aria-label="ByNaldo — Inicio">
+      <img
+        src="/assets/logo.webp"
+        alt="ByNaldo"
+        class="navbar__logo-img navbar__logo-img--light"
+      />
+      <img
+        src="/assets/logo2.webp"
+        alt=""
+        aria-hidden="true"
+        class="navbar__logo-img navbar__logo-img--dark"
+      />
+    </a>
 
     <div class="navbar__right">
       <nav class="navbar__links">
@@ -57,14 +69,6 @@
   <!-- ============================= -->
   <section class="hero" id="inicio">
 
-    <!-- ============================================== -->
-    <!-- IMAGEN PRINCIPAL DEL HERO                      -->
-    <!-- Reemplaza "TU-IMAGEN-HERO.jpg" por tu imagen   -->
-    <!-- ============================================== -->
-    <div class="hero__media" aria-hidden="false">
-      <img src="/assets/naldo_hero.webp" alt="" class="hero__media-img" />
-    </div>
-
     <div class="hero__content">
       <p class="hero__overline">Fotógrafo · Videógrafo · Director</p>
 
@@ -76,7 +80,7 @@
       <p class="hero__description">
         Soy Reinaldo Riascos, más conocido como By Naldo, fotógrafo, productor audiovisual y director creativo, nacido en Guapi, Cauca, y radicado en Cali. <br>
         Mi trabajo nace de mi interés por contar historias a través de la imagen y crear propuestas visuales que conecten con las personas.
-</p>
+      </p>
 
       <!-- Botón de WhatsApp -->
       <a
@@ -111,12 +115,6 @@
       </p>
     </div>
 
-    <!-- ============================================== -->
-    <!-- GALERÍA DE FOTOS                              -->
-    <!-- Reemplaza la URL de cada background-image     -->
-    <!-- en styles.css dentro de .gallery__item[data-x] -->
-    <!-- o usa <img src="tu-foto.jpg" /> dentro de cada item -->
-    <!-- ============================================== -->
     <div class="gallery">
       <figure class="gallery__item" data-index="01">
         <img src="/assets/IMG01.webp" alt="Documental urbano" />
@@ -166,7 +164,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="06">
+      <figure class="gallery__item" data-index="07">
         <img src="/assets/IMG07.webp" alt="Documental urbano" />
         <figcaption class="gallery__caption">
           <span>BYCLAUMAR · TONEÉ</span>
@@ -174,7 +172,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="06">
+      <figure class="gallery__item" data-index="08">
         <img src="/assets/IMG08.webp" alt="Documental urbano" />
         <figcaption class="gallery__caption">
           <span>LESAC</span>
@@ -182,7 +180,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="06">
+      <figure class="gallery__item" data-index="09">
         <img src="/assets/IMG09.webp" alt="Documental urbano" />
         <figcaption class="gallery__caption">
           <span>PROTRUDE</span>
@@ -191,6 +189,7 @@
       </figure>
     </div>
   </section>
+
 
   <!-- ============================= -->
   <!-- MÓDULO 3 — GALERÍA VIDEOS     -->
@@ -308,15 +307,13 @@
     <div class="footer__bottom">
       <span>© 2025 ByNaldo</span>
       <div class="footer__links">
-        <a href="https://www.instagram.com/caudatte/tagged/">Instagram</a>
-        <a href="https://www.behance.net/bynaldo">Behance</a>
-        <a href="https://www.youtube.com/@Bynaldoo">Youtube</a>
+        <a href="https://www.instagram.com/bynaldo_/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.behance.net/bynaldo" target="_blank" rel="noopener">Behance</a>
+        <a href="https://www.youtube.com/@Bynaldoo" target="_blank" rel="noopener">Youtube</a>
       </div>
     </div>
   </footer>
 
-  <!-- Instagram Embed Script -->
-  <script async src="//www.instagram.com/embed.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
