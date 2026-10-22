@@ -22,13 +22,6 @@
   /* Navbar translúcida */
   --navbar-bg: rgba(255, 255, 255, 0.7);
 
-  /* Imagen del hero */
-  --hero-img-filter: grayscale(100%) brightness(0.95) contrast(1.05);
-  --hero-img-opacity: 0.65;
-
-  /* Overlay del hero (fade a fondo) */
-  --hero-fade: rgba(255, 255, 255, 1);
-
   /* Tipografía */
   --font-primary: 'Montserrat', 'Inter', sans-serif;
 
@@ -66,11 +59,6 @@
   --action-hover-text: #000000;
 
   --navbar-bg: rgba(0, 0, 0, 0.6);
-
-  --hero-img-filter: grayscale(100%) brightness(0.35) contrast(1.1);
-  --hero-img-opacity: 0.55;
-
-  --hero-fade: rgba(0, 0, 0, 1);
 }
 
 /* =========================================================
@@ -128,13 +116,42 @@ a { color: inherit; text-decoration: none; }
   border-bottom-color: var(--border-default);
 }
 
+/* ---------- Logo con swap claro/oscuro ---------- */
 .navbar__logo {
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  transition: color var(--theme-transition);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+}
+
+.navbar__logo-img {
+  display: block;
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  transition: opacity var(--theme-transition);
+}
+
+/* Tema claro: se ve logo.webp (oscuro) */
+.navbar__logo-img--light {
+  opacity: 1;
+  position: relative;
+}
+
+.navbar__logo-img--dark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+/* Tema oscuro: se invierte la visibilidad */
+[data-theme="dark"] .navbar__logo-img--light {
+  opacity: 0;
+}
+
+[data-theme="dark"] .navbar__logo-img--dark {
+  opacity: 1;
 }
 
 .navbar__right {
@@ -248,50 +265,6 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   background: var(--bg-primary);
   transition: background-color var(--theme-transition);
-}
-
-/* ---------------------------------------------------------
-   Reemplaza TU-IMAGEN-HERO.jpg en el HTML
-   --------------------------------------------------------- */
-.hero__media {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  z-index: 0;
-}
-
-.hero__media-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: var(--hero-img-filter);
-  opacity: var(--hero-img-opacity);
-  animation: heroZoom 20s ease-in-out infinite alternate;
-  transition: filter var(--theme-transition), opacity var(--theme-transition);
-}
-
-@keyframes heroZoom {
-  0%   { transform: scale(1); }
-  100% { transform: scale(1.08); }
-}
-
-/* Fade a color de fondo (blanco o negro) */
-.hero__media::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    var(--hero-fade) 0%,
-    transparent 25%,
-    transparent 60%,
-    var(--hero-fade) 100%
-  );
-  z-index: 1;
-  pointer-events: none;
-  transition: background var(--theme-transition);
 }
 
 .hero__content {
@@ -518,27 +491,6 @@ a { color: inherit; text-decoration: none; }
   transform: translateY(0);
 }
 
-/* ---------------------------------------------------------
-   Reemplaza la URL de cada background-image por tus fotos
-   --------------------------------------------------------- */
-.gallery__item::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  filter: grayscale(100%) contrast(1.05) brightness(0.85);
-  transition: transform 1.2s var(--ease), filter 0.6s var(--ease);
-  z-index: 0;
-}
-
-.gallery__item[data-index="01"]::before { background-image: url('https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=900&q=80'); }
-.gallery__item[data-index="02"]::before { background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=900&q=80'); }
-.gallery__item[data-index="03"]::before { background-image: url('https://images.unsplash.com/photo-1517841905240-472988babdf9?w=900&q=80'); }
-.gallery__item[data-index="04"]::before { background-image: url('https://images.unsplash.com/photo-1503602642458-232111445657?w=900&q=80'); }
-.gallery__item[data-index="05"]::before { background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=900&q=80'); }
-.gallery__item[data-index="06"]::before { background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=900&q=80'); }
-
 .gallery__item img {
   position: absolute;
   inset: 0;
@@ -550,7 +502,6 @@ a { color: inherit; text-decoration: none; }
   z-index: 0;
 }
 
-.gallery__item:hover::before,
 .gallery__item:hover img {
   transform: scale(1.06);
   filter: grayscale(0%) contrast(1.1) brightness(1);
@@ -623,45 +574,6 @@ a { color: inherit; text-decoration: none; }
   transform: translateY(0);
 }
 
-.reel-card__frame {
-  position: relative;
-  aspect-ratio: 9 / 16;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-soft);
-  overflow: hidden;
-  transition: border-color 0.4s var(--ease),
-              transform 0.6s var(--ease),
-              background-color var(--theme-transition);
-}
-
-.reel-card__frame:hover {
-  border-color: var(--border-active);
-  transform: translateY(-6px);
-}
-
-.reel-card__frame .instagram-media {
-  margin: 0 !important;
-  min-width: 0 !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  background: var(--bg-tertiary) !important;
-  border: none !important;
-  border-radius: 0 !important;
-}
-
-.reel-card__frame::before {
-  content: '▶';
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-tertiary);
-  font-size: 1.5rem;
-  z-index: -1;
-}
-
 .reel-card__meta {
   display: flex;
   flex-direction: column;
@@ -681,6 +593,42 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.85rem;
   font-weight: 400;
   color: var(--text-primary);
+}
+
+/* =========================================================
+   REEL EMBED — VIDEO VERTICAL RECORTADO
+   ========================================================= */
+.reel-embed {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  border-radius: var(--radius-soft);
+  overflow: hidden;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  transition: border-color 0.4s var(--ease),
+              transform 0.6s var(--ease),
+              background-color var(--theme-transition);
+}
+
+.reel-card:hover .reel-embed {
+  border-color: var(--border-active);
+  transform: translateY(-6px);
+}
+
+.reel-embed__inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.reel-embed__inner iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 140%;
+  transform: translate(-50%, -50%);
+  border: 0;
 }
 
 /* =========================================================
@@ -754,6 +702,8 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 640px) {
   :root { --section-gap: 5rem; }
 
+  .navbar { padding: 1.25rem var(--page-margin); }
+  .navbar__logo { height: 26px; }
   .navbar__right { gap: 1.25rem; }
   .navbar__links { gap: 1.25rem; }
   .navbar__links a { font-size: 0.65rem; }
@@ -789,32 +739,4 @@ a { color: inherit; text-decoration: none; }
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
   }
-}
-
-
-/* ===========================================
-Correccion Shorts y Reels
-============================================== */
-.reel-embed {
-  position: relative;
-  aspect-ratio: 9 / 16;
-  border-radius: var(--radius-soft);
-  overflow: hidden;
-  background: var(--bg-tertiary);
-}
-
-.reel-embed__inner {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.reel-embed__inner iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 140%;          /* más alto que el contenedor */
-  transform: translate(-50%, -50%);
-  border: 0;
 }
