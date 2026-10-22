@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeToggle = document.querySelector('.theme-toggle');
 
   // El tema inicial ya lo aplica el script inline del <head>.
-  // Si no hay nada guardado, nos aseguramos de tener "light" explícito.
   if (!root.getAttribute('data-theme')) {
     root.setAttribute('data-theme', 'light');
   }
@@ -79,9 +78,66 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* =====================================================
-     5. Instagram embeds
+     5. MENÚ HAMBURGUESA (MÓVIL)
      ===================================================== */
-  if (window.instgrm && window.instgrm.Embeds) {
-    window.instgrm.Embeds.process();
+  const burger = document.querySelector('.navbar__burger');
+  const mobileMenu = document.querySelector('#mobile-menu');
+  const bodyEl = document.body;
+
+  const closeMenu = () => {
+    bodyEl.classList.remove('menu-open');
+    if (burger) {
+      burger.setAttribute('aria-expanded', 'false');
+      burger.setAttribute('aria-label', 'Abrir menú');
+    }
+    if (mobileMenu) {
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    }
+  };
+
+  const openMenu = () => {
+    bodyEl.classList.add('menu-open');
+    if (burger) {
+      burger.setAttribute('aria-expanded', 'true');
+      burger.setAttribute('aria-label', 'Cerrar menú');
+    }
+    if (mobileMenu) {
+      mobileMenu.setAttribute('aria-hidden', 'false');
+    }
+  };
+
+  if (burger && mobileMenu) {
+    burger.addEventListener('click', () => {
+      if (bodyEl.classList.contains('menu-open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    /* Cerrar al tocar un link del menú */
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
+    });
+
+    /* Cerrar con la tecla Escape */
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && bodyEl.classList.contains('menu-open')) {
+        closeMenu();
+      }
+    });
+
+    /* Cerrar si se agranda la ventana a desktop estando el menú abierto */
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (window.innerWidth > 768 && bodyEl.classList.contains('menu-open')) {
+          closeMenu();
+        }
+      }, 100);
+    });
   }
 });
