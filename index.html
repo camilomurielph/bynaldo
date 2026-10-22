@@ -29,19 +29,7 @@
   <!-- NAVBAR                        -->
   <!-- ============================= -->
   <header class="navbar">
-    <a href="#" class="navbar__logo" aria-label="ByNaldo — Inicio">
-      <img
-        src="/assets/logo.webp"
-        alt="ByNaldo"
-        class="navbar__logo-img navbar__logo-img--light"
-      />
-      <img
-        src="/assets/logo2.webp"
-        alt=""
-        aria-hidden="true"
-        class="navbar__logo-img navbar__logo-img--dark"
-      />
-    </a>
+    <a href="#" class="navbar__logo">BY·NALDO</a>
 
     <div class="navbar__right">
       <nav class="navbar__links">
@@ -73,8 +61,27 @@
       <p class="hero__overline">Fotógrafo · Videógrafo · Director</p>
 
       <h1 class="hero__title">
-        ByNaldo<br />
-         <em>cali</em>, <em>colombia</em>.
+        <!-- ============================================== -->
+        <!-- LOGO DEL HERO                                  -->
+        <!-- Cambia automáticamente según el tema activo    -->
+        <!-- logo.webp  → tema claro (logo oscuro)          -->
+        <!-- logo2.webp → tema oscuro (logo claro)          -->
+        <!-- ============================================== -->
+        <span class="hero__logo">
+          <img
+            src="/assets/logo.webp"
+            alt="ByNaldo"
+            class="hero__logo-img hero__logo-img--light"
+          />
+          <img
+            src="/assets/logo2.webp"
+            alt=""
+            aria-hidden="true"
+            class="hero__logo-img hero__logo-img--dark"
+          />
+        </span>
+        <br />
+        <em>cali</em>, <em>colombia</em>.
       </h1>
 
       <p class="hero__description">
@@ -164,7 +171,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="07">
+      <figure class="gallery__item" data-index="06">
         <img src="/assets/IMG07.webp" alt="Documental urbano" />
         <figcaption class="gallery__caption">
           <span>BYCLAUMAR · TONEÉ</span>
@@ -172,7 +179,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="08">
+      <figure class="gallery__item" data-index="06">
         <img src="/assets/IMG08.webp" alt="Documental urbano" />
         <figcaption class="gallery__caption">
           <span>LESAC</span>
@@ -180,7 +187,7 @@
         </figcaption>
       </figure>
 
-      <figure class="gallery__item" data-index="09">
+      <figure class="gallery__item" data-index="06">
         <img src="/assets/IMG09.webp" alt="Documental urbano" />
         <figcaption class="gallery__caption">
           <span>PROTRUDE</span>
@@ -189,7 +196,6 @@
       </figure>
     </div>
   </section>
-
 
   <!-- ============================= -->
   <!-- MÓDULO 3 — GALERÍA VIDEOS     -->
@@ -307,9 +313,9 @@
     <div class="footer__bottom">
       <span>© 2025 ByNaldo</span>
       <div class="footer__links">
-        <a href="https://www.instagram.com/bynaldo_/" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://www.behance.net/bynaldo" target="_blank" rel="noopener">Behance</a>
-        <a href="https://www.youtube.com/@Bynaldoo" target="_blank" rel="noopener">Youtube</a>
+        <a href="https://www.instagram.com/bynaldo_/">Instagram</a>
+        <a href="https://www.behance.net/bynaldo">Behance</a>
+        <a href="https://www.youtube.com/@Bynaldoo">Youtube</a>
       </div>
     </div>
   </footer>
