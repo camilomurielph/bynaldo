@@ -138,130 +138,112 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* =====================================================
-     6. AUTOPLAY DEL CARRUSEL DE VIDEOS (solo móvil)
+     6. PRELOAD THEME — fade-in de imágenes y videos
      ===================================================== */
-  const reels = document.querySelector('.reels');
-  const mobileQuery = window.matchMedia('(max-width: 640px)');
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  let autoplayRAF = null;
-  let lastTimestamp = 0;
-  let floatScroll = 0;
-  let isPaused = false;
-  let pauseTimeout = null;
-  const PAUSE_DELAY = 4000;      // ms de inactividad para reanudar
-  const SPEED = 0.35;            // px por frame @60fps ≈ 21 px/s
+  /* ---------- 6a. Fotos ---------- */
+  document.querySelectorAll('.gallery__item').forEach((item) => {
+    const img = item.querySelector('img');
+    if (!img) return;
 
-  const stopAutoplay = () => {
-    if (autoplayRAF) {
-      cancelAnimationFrame(autoplayRAF);
-      autoplayRAF = null;
-    }
-  };
+    const markLoaded = () => item.classList.add('is-loaded');
 
-  const startAutoplay = () => {
-    if (!reels) return;
-    if (autoplayRAF) return;
-    if (!mobileQuery.matches) return;
-    if (prefersReducedMotion.matches) return;
-    if (isPaused) return;
-
-    floatScroll = reels.scrollLeft;
-    lastTimestamp = performance.now();
-    autoplayRAF = requestAnimationFrame(tick);
-  };
-
-  const tick = (now) => {
-    if (!reels || isPaused) {
-      autoplayRAF = null;
-      return;
-    }
-
-    const delta = now - lastTimestamp;
-    lastTimestamp = now;
-
-    const maxScroll = reels.scrollWidth - reels.clientWidth;
-    if (maxScroll <= 0) {
-      autoplayRAF = null;
-      return;
-    }
-
-    // Velocidad independiente del framerate
-    const move = (SPEED / 16.67) * delta;
-    floatScroll += move;
-
-    if (floatScroll >= maxScroll - 1) {
-      // Llegamos al final: esperar un momento y volver al inicio
-      isPaused = true;
-      autoplayRAF = null;
-      setTimeout(() => {
-        if (!reels) return;
-        reels.scrollTo({ left: 0, behavior: 'smooth' });
-        setTimeout(() => {
-          if (!reels) return;
-          isPaused = false;
-          startAutoplay();
-        }, 900);
-      }, 1500);
-      return;
-    }
-
-    reels.scrollLeft = floatScroll;
-    autoplayRAF = requestAnimationFrame(tick);
-  };
-
-  const pauseForInteraction = () => {
-    isPaused = true;
-    stopAutoplay();
-    if (pauseTimeout) clearTimeout(pauseTimeout);
-  };
-
-  const scheduleResume = () => {
-    if (pauseTimeout) clearTimeout(pauseTimeout);
-    pauseTimeout = setTimeout(() => {
-      isPaused = false;
-      startAutoplay();
-    }, PAUSE_DELAY);
-  };
-
-  if (reels) {
-    // Pausar al tocar/dragear/rueda
-    ['touchstart', 'mousedown', 'wheel'].forEach((evt) => {
-      reels.addEventListener(evt, pauseForInteraction, { passive: true });
-    });
-
-    // Programar reanudación al terminar el gesto
-    ['touchend', 'mouseup', 'touchcancel'].forEach((evt) => {
-      reels.addEventListener(evt, scheduleResume, { passive: true });
-    });
-
-    // Solo correr cuando el carrusel está visible en pantalla
-    if ('IntersectionObserver' in window) {
-      const reelsObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isPaused) startAutoplay();
-          else if (!entry.isIntersecting) stopAutoplay();
-        });
-      }, { threshold: 0.25 });
-      reelsObserver.observe(reels);
+    if (img.complete && img.naturalWidth > 0) {
+      markLoaded();
     } else {
-      startAutoplay();
+      img.addEventListener('load', markLoaded, { once: true });
+      img.addEventListener('error', markLoaded, { once: true });
     }
+  });
 
-    // Al cambiar de breakpoint
-    mobileQuery.addEventListener('change', (e) => {
+  /* ---------- 6b. Videos (iframes) ---------- */
+  document.querySelectorAll('.reel-embed').forEach((embed) => {
+    const iframe = embed.querySelector('iframe');
+    if (!iframe) return;
+
+    const markLoaded = () => embed.classList.add('is-loaded');
+
+    iframe.addEventListener('load', markLoaded, { once: true });
+    setTimeout(markLoaded, 3000);
+  });
+
+  /* =====================================================
+     7. CARRUSELES MÓVILES — el item más visible se activa
+        (aplica a fotos y videos; el CSS decide qué cambia)
+     ===================================================== */
+  const setupActiveHighlight = (containerSelector, itemSelector, mediaQuery) => {
+    const container = document.querySelector(containerSelector);
+    if (!container) return;
+
+    let rafId = null;
+
+    const update = () => {
+      if (!mediaQuery.matches) return;
+
+      const items = container.querySelectorAll(itemSelector);
+      if (!items.length) return;
+
+      const viewportWidth = window.innerWidth;
+      let bestItem = null;
+      let maxVisibleWidth = 0;
+
+      items.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        const visibleLeft = Math.max(rect.left, 0);
+        const visibleRight = Math.min(rect.right, viewportWidth);
+        const visibleWidth = Math.max(0, visibleRight - visibleLeft);
+
+        if (visibleWidth > maxVisibleWidth) {
+          maxVisibleWidth = visibleWidth;
+          bestItem = item;
+        }
+      });
+
+      items.forEach((item) => {
+        item.classList.toggle('is-active', item === bestItem);
+      });
+    };
+
+    /* Recalcular al deslizar (throttle con rAF) */
+    container.addEventListener('scroll', () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        update();
+      });
+    }, { passive: true });
+
+    /* Recalcular cuando cada imagen termina de cargar
+       (el ancho del card depende del aspect-ratio de la imagen) */
+    container.querySelectorAll('img').forEach((img) => {
+      img.addEventListener('load', update, { once: true });
+    });
+
+    /* Primeras pasadas (por si las imágenes tardan) */
+    update();
+    setTimeout(update, 500);
+    setTimeout(update, 1500);
+    window.addEventListener('load', update);
+
+    /* Limpiar al volver a desktop */
+    mediaQuery.addEventListener('change', (e) => {
       if (e.matches) {
-        startAutoplay();
+        update();
       } else {
-        stopAutoplay();
-        if (reels) reels.scrollLeft = 0;
+        container.querySelectorAll(itemSelector).forEach((item) => {
+          item.classList.remove('is-active');
+        });
       }
     });
 
-    // Detener si la pestaña no está visible (ahorra batería)
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) stopAutoplay();
-      else if (!isPaused) startAutoplay();
+    /* Recalcular al rotar el dispositivo */
+    window.addEventListener('orientationchange', () => {
+      setTimeout(update, 200);
     });
-  }
+  };
+
+  const mobileQuery = window.matchMedia('(max-width: 640px)');
+  setupActiveHighlight('.gallery', '.gallery__item', mobileQuery);
+  setupActiveHighlight('.reels', '.reel-card', mobileQuery);
+
 });
