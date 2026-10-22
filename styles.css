@@ -659,7 +659,7 @@ body.menu-open {
 .gallery__item:nth-child(4) { grid-column: span 2; aspect-ratio: 16 / 11; }
 
 /* =========================================================
-   GALERÍA VIDEOS — Carrusel infinito con flechas (PC)
+   GALERÍA VIDEOS — 3 visibles + flechas (sin loop)
    ========================================================= */
 .videos-section {
   padding: var(--section-gap) 0;
@@ -736,12 +736,6 @@ body.menu-open {
   transform: translateX(0);
 }
 
-/* Clones del loop: siempre visibles (no participan del reveal animation) */
-.reel-card.is-clone {
-  opacity: 1;
-  transform: translateX(0);
-}
-
 .reel-card__meta {
   display: flex;
   flex-direction: column;
@@ -786,7 +780,8 @@ body.menu-open {
   transition: border-color 0.3s var(--ease),
               transform 0.3s var(--ease),
               background-color var(--theme-transition),
-              color var(--theme-transition);
+              color var(--theme-transition),
+              opacity 0.3s var(--ease);
 }
 
 .reels-arrow:hover {
@@ -801,6 +796,17 @@ body.menu-open {
 
 .reels-arrow:active {
   transform: translateY(-50%) scale(0.95);
+}
+
+/* Estado deshabilitado: sin hover, atenuado */
+.reels-arrow:disabled,
+.reels-arrow:disabled:hover,
+.reels-arrow:disabled:active {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: translateY(-50%);
+  border-color: var(--border-default);
+  background: var(--bg-primary);
 }
 
 .reels-arrow svg {
@@ -1131,7 +1137,7 @@ body.lightbox-open {
   }
 
   /* ----------------------------------------
-     CARRUSEL DE VIDEOS — móvil (sin flechas, sin loop)
+     CARRUSEL DE VIDEOS — móvil (sin flechas)
      ---------------------------------------- */
   .reels-wrapper {
     max-width: none;
@@ -1149,11 +1155,6 @@ body.lightbox-open {
 
   .reel-card {
     flex: 0 0 82vw;
-  }
-
-  /* Ocultar clones en móvil */
-  .reel-card.is-clone {
-    display: none !important;
   }
 
   .reel-embed__inner iframe {
