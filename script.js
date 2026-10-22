@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const root = document.documentElement;
   const themeToggle = document.querySelector('.theme-toggle');
 
-  // El tema inicial ya lo aplica el script inline del <head>.
   if (!root.getAttribute('data-theme')) {
     root.setAttribute('data-theme', 'light');
   }
@@ -115,21 +114,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    /* Cerrar al tocar un link del menú */
     mobileMenu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
         closeMenu();
       });
     });
 
-    /* Cerrar con la tecla Escape */
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && bodyEl.classList.contains('menu-open')) {
         closeMenu();
       }
     });
 
-    /* Cerrar si se agranda la ventana a desktop estando el menú abierto */
     let resizeTimer;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
@@ -138,6 +134,134 @@ document.addEventListener('DOMContentLoaded', () => {
           closeMenu();
         }
       }, 100);
+    });
+  }
+
+  /* =====================================================
+     6. AUTOPLAY DEL CARRUSEL DE VIDEOS (solo móvil)
+     ===================================================== */
+  const reels = document.querySelector('.reels');
+  const mobileQuery = window.matchMedia('(max-width: 640px)');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  let autoplayRAF = null;
+  let lastTimestamp = 0;
+  let floatScroll = 0;
+  let isPaused = false;
+  let pauseTimeout = null;
+  const PAUSE_DELAY = 4000;      // ms de inactividad para reanudar
+  const SPEED = 0.35;            // px por frame @60fps ≈ 21 px/s
+
+  const stopAutoplay = () => {
+    if (autoplayRAF) {
+      cancelAnimationFrame(autoplayRAF);
+      autoplayRAF = null;
+    }
+  };
+
+  const startAutoplay = () => {
+    if (!reels) return;
+    if (autoplayRAF) return;
+    if (!mobileQuery.matches) return;
+    if (prefersReducedMotion.matches) return;
+    if (isPaused) return;
+
+    floatScroll = reels.scrollLeft;
+    lastTimestamp = performance.now();
+    autoplayRAF = requestAnimationFrame(tick);
+  };
+
+  const tick = (now) => {
+    if (!reels || isPaused) {
+      autoplayRAF = null;
+      return;
+    }
+
+    const delta = now - lastTimestamp;
+    lastTimestamp = now;
+
+    const maxScroll = reels.scrollWidth - reels.clientWidth;
+    if (maxScroll <= 0) {
+      autoplayRAF = null;
+      return;
+    }
+
+    // Velocidad independiente del framerate
+    const move = (SPEED / 16.67) * delta;
+    floatScroll += move;
+
+    if (floatScroll >= maxScroll - 1) {
+      // Llegamos al final: esperar un momento y volver al inicio
+      isPaused = true;
+      autoplayRAF = null;
+      setTimeout(() => {
+        if (!reels) return;
+        reels.scrollTo({ left: 0, behavior: 'smooth' });
+        setTimeout(() => {
+          if (!reels) return;
+          isPaused = false;
+          startAutoplay();
+        }, 900);
+      }, 1500);
+      return;
+    }
+
+    reels.scrollLeft = floatScroll;
+    autoplayRAF = requestAnimationFrame(tick);
+  };
+
+  const pauseForInteraction = () => {
+    isPaused = true;
+    stopAutoplay();
+    if (pauseTimeout) clearTimeout(pauseTimeout);
+  };
+
+  const scheduleResume = () => {
+    if (pauseTimeout) clearTimeout(pauseTimeout);
+    pauseTimeout = setTimeout(() => {
+      isPaused = false;
+      startAutoplay();
+    }, PAUSE_DELAY);
+  };
+
+  if (reels) {
+    // Pausar al tocar/dragear/rueda
+    ['touchstart', 'mousedown', 'wheel'].forEach((evt) => {
+      reels.addEventListener(evt, pauseForInteraction, { passive: true });
+    });
+
+    // Programar reanudación al terminar el gesto
+    ['touchend', 'mouseup', 'touchcancel'].forEach((evt) => {
+      reels.addEventListener(evt, scheduleResume, { passive: true });
+    });
+
+    // Solo correr cuando el carrusel está visible en pantalla
+    if ('IntersectionObserver' in window) {
+      const reelsObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isPaused) startAutoplay();
+          else if (!entry.isIntersecting) stopAutoplay();
+        });
+      }, { threshold: 0.25 });
+      reelsObserver.observe(reels);
+    } else {
+      startAutoplay();
+    }
+
+    // Al cambiar de breakpoint
+    mobileQuery.addEventListener('change', (e) => {
+      if (e.matches) {
+        startAutoplay();
+      } else {
+        stopAutoplay();
+        if (reels) reels.scrollLeft = 0;
+      }
+    });
+
+    // Detener si la pestaña no está visible (ahorra batería)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopAutoplay();
+      else if (!isPaused) startAutoplay();
     });
   }
 });
