@@ -52,7 +52,6 @@
         <a href="#contacto">Contacto</a>
       </nav>
 
-      <!-- Interruptor de tema -->
       <button class="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
         <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="4"></circle>
@@ -63,7 +62,6 @@
         </svg>
       </button>
 
-      <!-- Botón hamburguesa (solo móvil) -->
       <button
         class="navbar__burger"
         type="button"
@@ -78,7 +76,6 @@
     </div>
   </header>
 
-  <!-- Menú móvil (overlay) -->
   <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
     <nav class="mobile-menu__nav">
       <a href="#fotos">Fotos</a>
@@ -115,11 +112,10 @@
       </h1>
 
       <p class="hero__description">
-        Soy Reinaldo Riascos, más conocido como By Naldo, fotógrafo, productor audiovisual y director creativo, nacido en Guapi, Cauca, y radicado en Cali. <br>
+        Soy Reinaldo Riascos, más conocido como By Naldo, fotógrafo, productor audiovisual y director creativo. Nacido en Guapi, Cauca, y radicado en Cali. <br>
         Mi trabajo nace de mi interés por contar historias a través de la imagen y crear propuestas visuales que conecten con las personas.
       </p>
 
-      <!-- Botón de WhatsApp -->
       <a
         href="https://wa.me/573102375607?text=Hola%2C%20quiero%20consultar%20por%20un%20proyecto"
         target="_blank"
@@ -239,128 +235,142 @@
       </p>
     </div>
 
-    <div class="reels">
+    <div class="reels-wrapper">
+      <button class="reels-arrow reels-arrow--prev" type="button" aria-label="Videos anteriores">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
 
-      <div class="reel-card">
-        <div class="reel-embed">
-          <div class="reel-embed__inner">
-            <iframe
-              src="https://www.youtube.com/embed/IyuaiH7lilQ?rel=0&modestbranding=1&playsinline=1"
-              title="Marcela Asprilla"
-              loading="lazy"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-            ></iframe>
+      <div class="reels">
+
+        <div class="reel-card">
+          <div class="reel-embed">
+            <div class="reel-embed__inner">
+              <iframe
+                src="https://www.youtube.com/embed/IyuaiH7lilQ?rel=0&modestbranding=1&playsinline=1"
+                title="Marcela Asprilla"
+                loading="lazy"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+          <div class="reel-card__meta">
+            <span class="reel-card__tag">Short Fashion Film</span>
+            <span class="reel-card__title">Marcela Asprilla</span>
           </div>
         </div>
-        <div class="reel-card__meta">
-          <span class="reel-card__tag">Short Fashion Film</span>
-          <span class="reel-card__title">Marcela Asprilla</span>
-        </div>
-      </div>
 
-      <div class="reel-card">
-        <div class="reel-embed">
-          <div class="reel-embed__inner">
-            <iframe
-              src="https://www.youtube.com/embed/Z4LX9wuwMs4?rel=0&modestbranding=1&playsinline=1"
-              title="MALPARID000 x NALDO"
-              loading="lazy"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-            ></iframe>
+        <div class="reel-card">
+          <div class="reel-embed">
+            <div class="reel-embed__inner">
+              <iframe
+                src="https://www.youtube.com/embed/Z4LX9wuwMs4?rel=0&modestbranding=1&playsinline=1"
+                title="MALPARID000 x NALDO"
+                loading="lazy"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+          <div class="reel-card__meta">
+            <span class="reel-card__tag">Comercial</span>
+            <span class="reel-card__title">MALPARID000 x NALDO</span>
           </div>
         </div>
-        <div class="reel-card__meta">
-          <span class="reel-card__tag">Comercial</span>
-          <span class="reel-card__title">MALPARID000 x NALDO</span>
-        </div>
-      </div>
 
-       <div class="reel-card">
-        <div class="reel-embed">
-          <div class="reel-embed__inner">
-            <iframe
-              src="https://www.youtube.com/embed/pBIrBU_xxLc?rel=0&modestbranding=1&playsinline=1"
-              title="Clothing Time"
-              loading="lazy"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-            ></iframe>
+        <div class="reel-card">
+          <div class="reel-embed">
+            <div class="reel-embed__inner">
+              <iframe
+                src="https://www.youtube.com/embed/pBIrBU_xxLc?rel=0&modestbranding=1&playsinline=1"
+                title="Clothing Time"
+                loading="lazy"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+          <div class="reel-card__meta">
+            <span class="reel-card__tag">Moda</span>
+            <span class="reel-card__title">CLOTHING TIME</span>
           </div>
         </div>
-        <div class="reel-card__meta">
-          <span class="reel-card__tag">Moda</span>
-          <span class="reel-card__title">CLOTHING TIME</span>
-        </div>
-      </div>
 
-      <div class="reel-card">
-        <div class="reel-embed">
-          <div class="reel-embed__inner">
-            <iframe
-              src="https://www.youtube.com/embed/R216AMMRXzI?rel=0&modestbranding=1&playsinline=1"
-              title="BYSOFIACARVAJAL 2"
-              loading="lazy"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-            ></iframe>
+        <div class="reel-card">
+          <div class="reel-embed">
+            <div class="reel-embed__inner">
+              <iframe
+                src="https://www.youtube.com/embed/R216AMMRXzI?rel=0&modestbranding=1&playsinline=1"
+                title="BYSOFIACARVAJAL 2"
+                loading="lazy"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+          <div class="reel-card__meta">
+            <span class="reel-card__tag">Moda</span>
+            <span class="reel-card__title">BYSOFIACARVAJAL 2</span>
           </div>
         </div>
-        <div class="reel-card__meta">
-          <span class="reel-card__tag">Moda</span>
-          <span class="reel-card__title">BYSOFIACARVAJAL 2</span>
-        </div>
-      </div>
 
-      <div class="reel-card">
-        <div class="reel-embed">
-          <div class="reel-embed__inner">
-            <iframe
-              src="https://www.youtube.com/embed/YD1PzpVggS0?rel=0&modestbranding=1&playsinline=1"
-              title="LESAC BOLSOS"
-              loading="lazy"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-            ></iframe>
+        <div class="reel-card">
+          <div class="reel-embed">
+            <div class="reel-embed__inner">
+              <iframe
+                src="https://www.youtube.com/embed/YD1PzpVggS0?rel=0&modestbranding=1&playsinline=1"
+                title="LESAC BOLSOS"
+                loading="lazy"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+          <div class="reel-card__meta">
+            <span class="reel-card__tag">Producto</span>
+            <span class="reel-card__title">LESAC BOLSOS</span>
           </div>
         </div>
-        <div class="reel-card__meta">
-          <span class="reel-card__tag">Producto</span>
-          <span class="reel-card__title">LESAC BOLSOS</span>
-        </div>
-      </div>
 
-      <div class="reel-card">
-        <div class="reel-embed">
-          <div class="reel-embed__inner">
-            <iframe
-              src="https://www.youtube.com/embed/ri1svTu-Q-Y?rel=0&modestbranding=1&playsinline=1"
-              title="Topboy TGR - MAREO"
-              loading="lazy"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-            ></iframe>
+        <div class="reel-card">
+          <div class="reel-embed">
+            <div class="reel-embed__inner">
+              <iframe
+                src="https://www.youtube.com/embed/ri1svTu-Q-Y?rel=0&modestbranding=1&playsinline=1"
+                title="Topboy TGR - MAREO"
+                loading="lazy"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+          <div class="reel-card__meta">
+            <span class="reel-card__tag">Videoclip</span>
+            <span class="reel-card__title">Topboy TGR - MAREO</span>
           </div>
         </div>
-        <div class="reel-card__meta">
-          <span class="reel-card__tag">Videoclip</span>
-          <span class="reel-card__title">Topboy TGR - MAREO</span>
-        </div>
+
       </div>
 
+      <button class="reels-arrow reels-arrow--next" type="button" aria-label="Videos siguientes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
     </div>
   </section>
 
