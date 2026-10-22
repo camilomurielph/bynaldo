@@ -316,8 +316,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* =====================================================
-     9. CARRUSEL DE VIDEOS — 3 visibles + flechas + loop
-        Solo desktop (> 640px). En móvil queda como antes.
+     9. CARRUSEL DE VIDEOS — 3 visibles + flechas (PC)
+        Sin loop. En móvil queda como antes.
      ===================================================== */
   const reelsEl = document.querySelector('.reels');
   const prevBtn = document.querySelector('.reels-arrow--prev');
@@ -326,7 +326,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (reelsEl) {
 
-    /* ---------- Helpers ---------- */
     const getStep = () => {
       const card = reelsEl.querySelector('.reel-card');
       if (!card) return 300;
@@ -336,63 +335,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return card.offsetWidth + gap;
     };
 
-    const instantScrollTo = (left) => {
-      const prevSnap = reelsEl.style.scrollSnapType;
-      const prevBehavior = reelsEl.style.scrollBehavior;
-      reelsEl.style.scrollSnapType = 'none';
-      reelsEl.style.scrollBehavior = 'auto';
-      reelsEl.scrollLeft = left;
-      // Forzar reflow para que el navegador aplique el cambio
-      void reelsEl.offsetWidth;
-      reelsEl.style.scrollSnapType = prevSnap;
-      reelsEl.style.scrollBehavior = prevBehavior;
+    /* Deshabilitar flechas en los extremos (evita clicks inútiles) */
+    const updateArrowState = () => {
+      if (!desktopQuery.matches) return;
+      const maxScroll = reelsEl.scrollWidth - reelsEl.clientWidth;
+      const tolerance = 4;
+      if (prevBtn) prevBtn.disabled = reelsEl.scrollLeft <= tolerance;
+      if (nextBtn) nextBtn.disabled = reelsEl.scrollLeft >= maxScroll - tolerance;
     };
-
-    /* ---------- Clones para el loop ---------- */
-    const originals = Array.from(reelsEl.querySelectorAll('.reel-card:not(.is-clone)'));
-    const N = originals.length;
-    const M = 3; // clones a cada lado (coincide con las cards visibles)
-
-    const cloneCard = (source) => {
-      const c = source.cloneNode(true);
-      c.classList.add('is-clone');
-      c.setAttribute('aria-hidden', 'true');
-      c.removeAttribute('tabindex');
-      c.querySelectorAll('[tabindex], a, button, iframe, [role="button"]').forEach((el) => {
-        el.setAttribute('tabindex', '-1');
-      });
-      return c;
-    };
-
-    if (N > M) {
-      // Clones al inicio: los últimos M originales (en orden)
-      const startFrag = document.createDocumentFragment();
-      for (let i = N - M; i < N; i++) {
-        startFrag.appendChild(cloneCard(originals[i]));
-      }
-      reelsEl.insertBefore(startFrag, reelsEl.firstChild);
-
-      // Clones al final: los primeros M originales (en orden)
-      const endFrag = document.createDocumentFragment();
-      for (let i = 0; i < M; i++) {
-        endFrag.appendChild(cloneCard(originals[i]));
-      }
-      reelsEl.appendChild(endFrag);
-    }
-
-    /* ---------- Scroll inicial (solo desktop) ---------- */
-    const setInitialScroll = () => {
-      if (desktopQuery.matches) {
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            instantScrollTo(M * getStep());
-          });
-        });
-      } else {
-        reelsEl.scrollLeft = 0;
-      }
-    };
-    setInitialScroll();
 
     /* ---------- Drag-scroll con mouse ---------- */
     let isDown = false;
@@ -439,28 +389,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, true);
 
-    /* ---------- Boundary check (loop invisible) ---------- */
-    const checkBoundary = () => {
-      if (!desktopQuery.matches) return;
-      const step = getStep();
-      const index = Math.round(reelsEl.scrollLeft / step);
-
-      if (index < M) {
-        // En zona de clones iniciales → saltar hacia adelante
-        instantScrollTo((index + N) * step);
-      } else if (index >= M + N) {
-        // En zona de clones finales → saltar hacia atrás
-        instantScrollTo((index - N) * step);
-      }
-    };
-
-    let scrollSettleTimer;
-    reelsEl.addEventListener('scroll', () => {
-      if (!desktopQuery.matches) return;
-      clearTimeout(scrollSettleTimer);
-      scrollSettleTimer = setTimeout(checkBoundary, 200);
-    }, { passive: true });
-
     /* ---------- Flechas ---------- */
     if (prevBtn) {
       prevBtn.addEventListener('click', () => {
@@ -472,21 +400,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (nextBtn) {
       nextBtn.addEventListener('click', () => {
         if (!desktopQuery.matches) return;
-        const step = getStep();
-        const index = Math.round(reelsEl.scrollLeft / step);
-
-        // Si estamos en la última posición real, pre-saltar al inicio
-        // (equivalente visual) para que el scroll termine en la posición correcta
-        if (index >= M + N - 1) {
-          instantScrollTo((index - N) * step);
-        }
-
-        reelsEl.scrollBy({ left: step, behavior: 'smooth' });
+        reelsEl.scrollBy({ left: getStep(), behavior: 'smooth' });
       });
     }
 
-    /* ---------- Resize ---------- */
-    desktopQuery.addEventListener('change', setInitialScroll);
+    /* ---------- Actualización de estado ---------- */
+    let scrollStateTimer;
+    reelsEl.addEventListener('scroll', () => {
+      clearTimeout(scrollStateTimer);
+      scrollStateTimer = setTimeout(updateArrowState, 80);
+    }, { passive: true });
+
+    window.addEventListener('resize', updateArrowState);
+
+    desktopQuery.addEventListener('change', () => {
+      if (desktopQuery.matches) {
+        updateArrowState();
+      } else {
+        reelsEl.scrollLeft = 0;
+      }
+    });
+
+    /* Primeras pasadas */
+    updateArrowState();
+    setTimeout(updateArrowState, 300);
+    setTimeout(updateArrowState, 1000);
   }
 
 });
