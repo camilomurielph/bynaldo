@@ -119,14 +119,12 @@ a { color: inherit; text-decoration: none; }
 /* ---------------------------------------------------------
    LOGO DEL NAVBAR (reemplaza el texto "BY·NALDO")
    Cambia de imagen según el tema activo.
-   Altura pensada para coincidir visualmente con el texto
-   original (font-size: 0.9rem).
    --------------------------------------------------------- */
 .navbar__logo {
   position: relative;
   display: inline-flex;
   align-items: center;
-  height: 1.25rem;   /* ≈ 20px, similar al texto original */
+  height: 1.25rem;
 }
 
 .navbar__logo-img {
@@ -254,6 +252,69 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* =========================================================
+   BOTÓN HAMBURGUESA
+   ========================================================= */
+.navbar__burger {
+  display: none;               /* oculto en desktop */
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.3s var(--ease),
+              color var(--theme-transition);
+}
+
+.navbar__burger:hover {
+  border-color: var(--border-active);
+}
+
+.navbar__burger:focus-visible {
+  outline: 1px solid var(--border-active);
+  outline-offset: 3px;
+}
+
+.navbar__burger span {
+  display: block;
+  width: 16px;
+  height: 1.5px;
+  background: currentColor;
+  transition: transform 0.3s var(--ease),
+              opacity 0.3s var(--ease);
+  transform-origin: center;
+}
+
+/* Cuando el menú está abierto: transforma las 3 líneas en una X */
+body.menu-open .navbar__burger span:nth-child(1) {
+  transform: translateY(5.5px) rotate(45deg);
+}
+body.menu-open .navbar__burger span:nth-child(2) {
+  opacity: 0;
+}
+body.menu-open .navbar__burger span:nth-child(3) {
+  transform: translateY(-5.5px) rotate(-45deg);
+}
+
+/* =========================================================
+   MENÚ MÓVIL (OVERLAY)
+   ========================================================= */
+.mobile-menu {
+  display: none;               /* oculto en desktop */
+}
+
+/* Bloqueo de scroll cuando el menú está abierto */
+body.menu-open {
+  overflow: hidden;
+}
+
+/* =========================================================
    HERO
    ========================================================= */
 .hero {
@@ -302,14 +363,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------------------------------------------------------
-   LOGO DEL HERO
-   Reemplaza al antiguo texto "ByNaldo".
-   Cambia de logo según el tema activo.
+   LOGO DEL HERO (reemplaza el texto "ByNaldo")
    --------------------------------------------------------- */
 .hero__logo {
   position: relative;
   display: inline-block;
-  height: 0.7em;              /* ~ altura visual del texto original */
+  height: 0.7em;
   vertical-align: middle;
 }
 
@@ -707,12 +766,82 @@ a { color: inherit; text-decoration: none; }
   .reels { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* =========================================================
+   MÓVIL — menú hamburguesa y overlay
+   ========================================================= */
+@media (max-width: 768px) {
+  /* Ocultar los links inline del navbar */
+  .navbar__links {
+    display: none;
+  }
+
+  /* Reducir gap del bloque derecho */
+  .navbar__right {
+    gap: 1rem;
+  }
+
+  /* Mostrar hamburguesa */
+  .navbar__burger {
+    display: inline-flex;
+  }
+
+  /* Logo un poquito más chico en móvil */
+  .navbar__logo {
+    height: 1rem;
+  }
+
+  /* Overlay full-screen del menú móvil */
+  .mobile-menu {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    background: var(--bg-primary);
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s var(--ease),
+                visibility 0.4s var(--ease),
+                background-color var(--theme-transition);
+  }
+
+  body.menu-open .mobile-menu {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-menu__nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .mobile-menu__nav a {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  }
+
+  body.menu-open .mobile-menu__nav a {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger: cada link entra un poco más tarde */
+  body.menu-open .mobile-menu__nav a:nth-child(1) { transition-delay: 0.15s; }
+  body.menu-open .mobile-menu__nav a:nth-child(2) { transition-delay: 0.25s; }
+  body.menu-open .mobile-menu__nav a:nth-child(3) { transition-delay: 0.35s; }
+}
+
 @media (max-width: 640px) {
   :root { --section-gap: 5rem; }
-
-  .navbar__right { gap: 1.25rem; }
-  .navbar__links { gap: 1.25rem; }
-  .navbar__links a { font-size: 0.65rem; }
 
   .gallery { grid-template-columns: 1fr; gap: 0.75rem; }
   .gallery__item:nth-child(1),
@@ -769,7 +898,7 @@ a { color: inherit; text-decoration: none; }
   top: 50%;
   left: 50%;
   width: 100%;
-  height: 140%;          /* más alto que el contenedor */
+  height: 140%;
   transform: translate(-50%, -50%);
   border: 0;
 }
