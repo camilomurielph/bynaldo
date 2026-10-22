@@ -116,42 +116,13 @@ a { color: inherit; text-decoration: none; }
   border-bottom-color: var(--border-default);
 }
 
-/* ---------- Logo con swap claro/oscuro ---------- */
 .navbar__logo {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  height: 32px;
-}
-
-.navbar__logo-img {
-  display: block;
-  height: 100%;
-  width: auto;
-  object-fit: contain;
-  transition: opacity var(--theme-transition);
-}
-
-/* Tema claro: se ve logo.webp (oscuro) */
-.navbar__logo-img--light {
-  opacity: 1;
-  position: relative;
-}
-
-.navbar__logo-img--dark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-}
-
-/* Tema oscuro: se invierte la visibilidad */
-[data-theme="dark"] .navbar__logo-img--light {
-  opacity: 0;
-}
-
-[data-theme="dark"] .navbar__logo-img--dark {
-  opacity: 1;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  transition: color var(--theme-transition);
 }
 
 .navbar__right {
@@ -296,6 +267,47 @@ a { color: inherit; text-decoration: none; }
   color: var(--text-primary);
   opacity: 0;
   animation: fadeUp 1.2s var(--ease) 0.4s forwards;
+}
+
+/* ---------------------------------------------------------
+   LOGO DEL HERO
+   Reemplaza al antiguo texto "ByNaldo".
+   Cambia de logo según el tema activo.
+   --------------------------------------------------------- */
+.hero__logo {
+  position: relative;
+  display: inline-block;
+  height: 0.7em;              /* ~ altura visual del texto original */
+  vertical-align: middle;
+}
+
+.hero__logo-img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  transition: opacity var(--theme-transition);
+}
+
+.hero__logo-img--light {
+  position: relative;
+  opacity: 1;
+}
+
+.hero__logo-img--dark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+[data-theme="dark"] .hero__logo-img--light {
+  opacity: 0;
+}
+
+[data-theme="dark"] .hero__logo-img--dark {
+  opacity: 1;
 }
 
 .hero__title em {
@@ -596,42 +608,6 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* =========================================================
-   REEL EMBED — VIDEO VERTICAL RECORTADO
-   ========================================================= */
-.reel-embed {
-  position: relative;
-  aspect-ratio: 9 / 16;
-  border-radius: var(--radius-soft);
-  overflow: hidden;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-default);
-  transition: border-color 0.4s var(--ease),
-              transform 0.6s var(--ease),
-              background-color var(--theme-transition);
-}
-
-.reel-card:hover .reel-embed {
-  border-color: var(--border-active);
-  transform: translateY(-6px);
-}
-
-.reel-embed__inner {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.reel-embed__inner iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 140%;
-  transform: translate(-50%, -50%);
-  border: 0;
-}
-
-/* =========================================================
    FOOTER
    ========================================================= */
 .footer {
@@ -702,8 +678,6 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 640px) {
   :root { --section-gap: 5rem; }
 
-  .navbar { padding: 1.25rem var(--page-margin); }
-  .navbar__logo { height: 26px; }
   .navbar__right { gap: 1.25rem; }
   .navbar__links { gap: 1.25rem; }
   .navbar__links a { font-size: 0.65rem; }
@@ -739,4 +713,31 @@ a { color: inherit; text-decoration: none; }
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+/* =========================================================
+   REEL EMBED — VIDEO VERTICAL RECORTADO
+   ========================================================= */
+.reel-embed {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  border-radius: var(--radius-soft);
+  overflow: hidden;
+  background: var(--bg-tertiary);
+}
+
+.reel-embed__inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.reel-embed__inner iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 140%;          /* más alto que el contenedor */
+  transform: translate(-50%, -50%);
+  border: 0;
 }
